@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do you love me?</title>
+    <style>
+        body {
+            background-color: #f5d1dc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: fadeIn 1s;
+            position: relative;
+        }
+        .emoji {
+            font-size: 50px;
+            animation: bounce 2s infinite;
+        }
+        .buttons {
+            margin-top: 20px;
+            position: relative;
+        }
+        .buttons button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+        .buttons button:hover {
+            transform: scale(1.1);
+        }
+        .yes {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .no {
+            background-color: #f44336;
+            color: white;
+            position: absolute;
+        }
+        .yes:hover {
+            background-color: #45a049;
+        }
+        .no:hover {
+            background-color: #e53935;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="question-container">
+        <div class="emoji">😻</div>
+        <h1>DO you love me?</h1>
+        <p>~Anish is all yours</p>
+        <div class="buttons">
+            <button class="yes" onclick="showYesMessage()">Yes</button>
+            <button class="no" onclick="moveNoButton()">No</button>
+        </div>
+    </div>
+    <div class="container" id="end-message" style="display: none;">
+        <div class="emoji">😹</div>
+        <h1>Just kidding! You're awesome!</h1>
+    </div>
+    <div class="container" id="funny-message" style="display: none;">
+        <div class="emoji">🤣</div>
+        <h1 id="funny-text"></h1>
+    </div>
+    <script>
+        const funnyComments = [
+            "You sure about that?",
+            "Come on, don't be shy!",
+            "I'll keep asking 😜",
+            "Still no? 😢",
+            "You can't escape! 😆",
+            "Just say yes already! 😂"
+        ];
+        let commentIndex = 0;
+
+        function moveNoButton() {
+            const noButton = document.querySelector('.no');
+            const container = document.querySelector('.buttons');
+            const containerRect = container.getBoundingClientRect();
+            const maxX = containerRect.width - noButton.offsetWidth;
+            const maxY = containerRect.height - noButton.offsetHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            noButton.style.left = `${randomX}px`;
+            noButton.style.top = `${randomY}px`;
+
+            if (commentIndex < funnyComments.length) {
+                showFunnyMessage(funnyComments[commentIndex]);
+                commentIndex++;
+            } else {
+                commentIndex = 0;
+                showFunnyMessage(funnyComments[commentIndex]);
+            }
+        }
+
+        function showFunnyMessage(message) {
+            const funnyMessageContainer = document.getElementById('funny-message');
+            const funnyText = document.getElementById('funny-text');
+            funnyText.textContent = message;
+            funnyMessageContainer.style.display = 'block';
+            funnyMessageContainer.style.animation = 'fadeIn 1s';
+            setTimeout(() => {
+                funnyMessageContainer.style.animation = 'fadeOut 1s';
+                setTimeout(() => {
+                    funnyMessageContainer.style.display = 'none';
+                }, 1000);
+            }, 2000);
+        }
+
+        function showYesMessage() {
+            const container = document.getElementById('question-container');
+            container.style.animation = 'fadeOut 1s';
+            setTimeout(() => {
+                container.style.display = 'none';
+                const endMessage = document.getElementById('end-message');
+                endMessage.style.display = 'block';
+                endMessage.style.animation = 'fadeIn 1s';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
